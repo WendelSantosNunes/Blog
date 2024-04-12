@@ -38,6 +38,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_enabled")
     private Boolean isEnabled;
 
     @Enumerated(EnumType.STRING)
