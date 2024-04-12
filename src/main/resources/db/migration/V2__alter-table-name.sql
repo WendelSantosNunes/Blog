@@ -1,0 +1,1 @@
+ALTER TABLE users CHANGE nome name VARCHAR(100) NOT NULL;

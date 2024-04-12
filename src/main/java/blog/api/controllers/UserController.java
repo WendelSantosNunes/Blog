@@ -2,7 +2,9 @@ package blog.api.controllers;
 
 import blog.api.domain.user.User;
 import blog.api.dto.user.UserAuthenticationDTO;
+import blog.api.dto.user.UserLoginResponseDTO;
 import blog.api.dto.user.UserRegisterDTO;
+import blog.api.services.TokenService;
 import blog.api.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,20 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid UserAuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok().body(new UserLoginResponseDTO(token));
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid UserRegisterDTO data){
         if(this.service.login(data.email()) != null){
             return ResponseEntity.badRequest().build();
@@ -41,8 +48,8 @@ public class UserController {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(
+                data.name(),
                 data.email(),
-                data.password(),
                 data.phone(),
                 encryptedPassword,
                 data.role()
