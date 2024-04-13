@@ -3,10 +3,12 @@ package blog.api.services;
 import blog.api.domain.user.User;
 import blog.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -38,5 +40,17 @@ public class UserService {
         currentUser.setRole(updateUser.getRole());
 
         this.repository.save(currentUser);
+    }
+
+    public Optional<User> getUser(Long id) {
+        return this.repository.findById(id);
+    }
+
+    public void UserDelete(User dados) {
+        this.repository.save(dados);
+    }
+
+    public List<User> getAllUsers() {
+        return this.repository.findAll();
     }
 }
