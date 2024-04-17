@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -92,13 +91,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        Optional<User> optionalUser = this.service.getUser(data.id());
-
-        if (!optionalUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        User user = optionalUser.get();
+        User user = this.service.getUser(data.id());
 
         if (currentEmail.equals(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -112,8 +105,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable Long id) {
-        return this.service.getUser(id);
+    public ResponseEntity getUser(@PathVariable Long id) {
+
+        User user = this.service.getUser(id);
+
+        return ResponseEntity.ok().body(user);
     }
 
     @GetMapping()

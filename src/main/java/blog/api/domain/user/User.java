@@ -2,6 +2,7 @@ package blog.api.domain.user;
 
 import blog.api.domain.user.enumUser.UserRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

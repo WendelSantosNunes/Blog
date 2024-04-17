@@ -1,6 +1,7 @@
 package blog.api.services;
 
 import blog.api.domain.user.User;
+import blog.api.infra.exception.TokenVerificationException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -28,7 +29,7 @@ public class TokenService {
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception){
-            throw  new RuntimeException("Error while generationg token", exception);
+            throw new RuntimeException("Erro ao gerar token", exception);
         }
     }
 
@@ -41,7 +42,7 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            return "";
+            throw new TokenVerificationException("Token Inválido!");
         }
     }
 

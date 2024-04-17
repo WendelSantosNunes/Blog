@@ -1,6 +1,7 @@
 package blog.api.services;
 
 import blog.api.domain.user.User;
+import blog.api.domain.user.exceptions.UserNotFoundException;
 import blog.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,8 +43,15 @@ public class UserService {
         this.repository.save(currentUser);
     }
 
-    public Optional<User> getUser(Long id) {
-        return this.repository.findById(id);
+    public User getUser(Long id) {
+        User newUser = this.repository.findById(id).orElseThrow(
+                () -> new UserNotFoundException("User not found with id: " + id));
+
+        if(!newUser.isEnabled()){
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
+
+        return newUser;
     }
 
     public void UserDelete(User dados) {
@@ -51,6 +59,6 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return this.repository.findAll();
+        return this.repository.findAll().stream().filter(user -> user.isEnabled()).toList();
     }
 }
