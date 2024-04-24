@@ -28,10 +28,13 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/user/reset-password").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/user/save-password").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/auth/update-user").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/auth/delete-user").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/user/change-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
