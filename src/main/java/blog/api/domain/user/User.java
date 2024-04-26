@@ -1,5 +1,6 @@
 package blog.api.domain.user;
 
+import blog.api.domain.post.Post;
 import blog.api.domain.user.enumUser.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -48,6 +49,9 @@ public class User implements UserDetails {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
     public User(String name, String email, String phone, String password, UserRole role) {
         this.name = name;
