@@ -13,7 +13,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     UserDetails findUserDetailsByEmail(String email);
     User findByEmail(String email);
-
     @Query(value = "SELECT * FROM users u JOIN posts p ON u.id = p.user_id WHERE u.id = :userId", nativeQuery = true)
     Optional<User> findByIdWithPosts(@Param("userId") Long userId);
 }

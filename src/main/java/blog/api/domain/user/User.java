@@ -2,6 +2,7 @@ package blog.api.domain.user;
 
 import blog.api.domain.post.Post;
 import blog.api.domain.user.enumUser.UserRole;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.EqualsAndHashCode;
@@ -51,6 +52,7 @@ public class User implements UserDetails {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Post> posts;
 
     public User(String name, String email, String phone, String password, UserRole role) {

@@ -1,6 +1,7 @@
 package blog.api.domain.post;
 
 import blog.api.domain.user.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,8 +11,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity(name="post")
-@Table(name="post")
+@Entity(name="posts")
+@Table(name="posts")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,6 +31,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @Column(name = "created_at")
