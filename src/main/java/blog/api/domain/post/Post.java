@@ -43,4 +43,10 @@ public class Post {
         this.user = user;
         this.createdAt = LocalDateTime.now();
     }
+
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
+    }
 }
