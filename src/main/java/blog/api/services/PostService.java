@@ -17,21 +17,25 @@ public class PostService {
     private PostRepository postRepository;
 
     public List<Post> getPost(){
-        return postRepository.findAll();
+        return this.postRepository.findAll();
     }
 
     public Post getPostId(Long id){
-        return postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("User not found with id: " + id));
+        return this.postRepository.findById(id).orElseThrow(() -> new PostNotFoundException("Post not found with id: " + id));
     }
 
     public void registerPost(Post newPost){
-        postRepository.save(newPost);
+        this.postRepository.save(newPost);
     }
 
     public Post updatePost(Post updatePost, Post post) {
         post.setContent(updatePost.getContent());
         post.setTitle(updatePost.getTitle());
 
-        return postRepository.save(post);
+        return this.postRepository.save(post);
+    }
+
+    public void deletePost(Long id){
+        this.postRepository.deleteById(id);
     }
 }

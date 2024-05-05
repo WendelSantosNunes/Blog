@@ -74,4 +74,23 @@ public class PostController {
 
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePost(@PathVariable Long id, @RequestHeader("Authorization") String token){
+        token =  token.replace("Bearer ", "");
+
+        DecodedJWT jwt = JWT.decode(token);
+        String currentEmail = jwt.getSubject();
+        String currentUserRole = jwt.getClaim("role").asString();
+
+        Post post = this.postService.getPostId(id);
+
+        if(!currentEmail.equals(post.getUser().getEmail()) && !currentUserRole.equals("ADMIN")){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        this.postService.deletePost(id);
+
+        return ResponseEntity.ok().build();
+    }
 }
