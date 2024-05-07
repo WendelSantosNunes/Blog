@@ -41,6 +41,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/auth/user/change-password").permitAll()
                         .requestMatchers(HttpMethod.GET, "/post").permitAll()
                         .requestMatchers(HttpMethod.GET, "/comment").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
