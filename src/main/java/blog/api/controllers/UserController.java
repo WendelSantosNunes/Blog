@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -124,16 +125,35 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponseGetDTO> getUser(@PathVariable Long id) {
 
         User user = this.service.getUser(id);
+        UserResponseGetDTO userResponseGetDTO = new UserResponseGetDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getCreatedAt(),
+                user.getPosts()
+        );
 
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.ok().body(userResponseGetDTO);
     }
 
     @GetMapping()
-    public List<User> getAllUsers() {
-        return this.service.getAllUsers();
+    public ResponseEntity<List<UserResponseGetDTO>> getAllUsers() {
+        List<User> users = this.service.getAllUsers();
+        List<UserResponseGetDTO> dtoList = users.stream()
+                .map(user -> new UserResponseGetDTO(
+                        user.getId(),
+                        user.getName(),
+                        user.getEmail(),
+                        user.getPhone(),
+                        user.getCreatedAt(),
+                        user.getPosts()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(dtoList);
     }
 
     // Recuperação de senha
