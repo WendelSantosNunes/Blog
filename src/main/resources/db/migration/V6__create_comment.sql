@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    content TEXT NOT NULL,
+    post_id BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email_user VARCHAR(255),
+
+    PRIMARY KEY(id),
+    FOREIGN KEY(post_id) REFERENCES posts(id)
+);
