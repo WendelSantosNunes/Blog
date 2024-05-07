@@ -11,6 +11,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,26 @@ public class CommentController {
         this.commentService.registerComment(comment);
 
         return ResponseEntity.ok().body("Comentário Cadastrado!");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity putComment(@RequestBody @Valid CommentRegisterDTO dados,
+                           @RequestHeader("Authorization") String token,
+                           @PathVariable Long id){
+
+        token =  token.replace("Bearer ", "");
+
+        DecodedJWT jwt = JWT.decode(token);
+        String currentEmail = jwt.getSubject();
+
+        Comment putComment = this.commentService.getCommentId(id);
+
+        if(!currentEmail.equals(putComment.getEmail_user())){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        this.commentService.putComment(dados, id);
+
+        return ResponseEntity.ok().build();
     }
 }
