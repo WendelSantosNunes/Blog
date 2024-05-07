@@ -2,9 +2,7 @@ package blog.api.controllers;
 
 import blog.api.domain.comment.Comment;
 import blog.api.domain.post.Post;
-import blog.api.domain.user.User;
 import blog.api.dto.comment.CommentRegisterDTO;
-import blog.api.dto.post.PostRegisterDTO;
 import blog.api.services.CommentService;
 import blog.api.services.PostService;
 import com.auth0.jwt.JWT;
@@ -69,6 +67,26 @@ public class CommentController {
         }
 
         this.commentService.putComment(dados, id);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteComment(@PathVariable Long id, @RequestHeader("Authorization") String token){
+
+        token =  token.replace("Bearer ", "");
+
+        DecodedJWT jwt = JWT.decode(token);
+        String currentEmail = jwt.getSubject();
+        String currentUserRole = jwt.getClaim("role").asString();
+
+        Comment putComment = this.commentService.getCommentId(id);
+
+        if(!currentEmail.equals(putComment.getEmail_user()) && !currentUserRole.equals("ADMIN")){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        this.commentService.deleteComment(id);
 
         return ResponseEntity.ok().build();
     }

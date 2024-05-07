@@ -35,6 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/auth/update-user").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/post").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/auth/delete-user").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/comment").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/user/change-password").permitAll()

@@ -37,4 +37,8 @@ public class CommentService {
 
         this.commentRepository.save(currentComment);
     }
+
+    public void deleteComment(Long id){
+        this.commentRepository.deleteById(id);
+    }
 }
